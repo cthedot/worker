@@ -1,17 +1,12 @@
 "use strict";
+
 if (typeof importScripts === 'function') {
-  importScripts('workerutil.js');
-  addEventListener('message', function (e) {
+  importScripts('sharedutil.js');
 
-    Workerutil.crud(e.data)
-      .then(function (e) {
-        postMessage(e)
-      })
-      .catch(function (e) {
-        postMessage(e)
-      })
+  self.addEventListener('message', function (e) {
+    e.data.forEach(function (data) {
+      Sharedutil.crud(data).then(postMessage).catch(postMessage)
+    })
+
   });
-
 }
-
-

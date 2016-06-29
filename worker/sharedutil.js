@@ -1,6 +1,5 @@
 "use strict";
-
-var Workerutil;
+var Sharedutil;
 
 ; (function () {
 
@@ -23,13 +22,13 @@ var Workerutil;
 
       var request = new XMLHttpRequest();
 
-      request.addEventListener('load', function (e) {
-        console.log(1, arguments)
+      request.addEventListener('loadend', function (e) {
         if ([200, 201].indexOf(request.status) > -1) {
           resolve(request.response)
         }
         else {
           reject({
+            url: url,
             status: request.status,
             statusText: request.statusText
           })
@@ -37,7 +36,6 @@ var Workerutil;
       });
 
       request.addEventListener('error', function (e) {
-        console.log(2, arguments)
         reject({
           status: request.status,
           statusText: request.statusText
@@ -59,8 +57,7 @@ var Workerutil;
     })
   }
 
-  Workerutil = {
+  Sharedutil = {
     crud: crud
   }
-
 })();

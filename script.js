@@ -19,11 +19,11 @@
     var aWorker = new Worker("worker/a.js");
 
     aWorker.onmessage = function (e) {
-      console.log('Message received from worker', arguments);
+      console.log('Message received from worker', e);
       output(e.data);
     }
 
-    aWorker.postMessage('/data/test.json');
+    aWorker.postMessage(['/data/test.json', 'UNKNOWN.json']);
   })
 
 
