@@ -2,6 +2,7 @@
 ; (function () {
 
   var $progress
+  var $progresses
   var $output
   var $test
 
@@ -16,29 +17,41 @@
   document.addEventListener('DOMContentLoaded', function (e) {
 
     $test = document.getElementById('test')
+    $output = document.getElementById('output')
+    $progress = document.getElementById('progress')
+    $progresses = document.getElementById('progresses')
+
     var anim = setInterval(function () {
       $test.innerText = 1000 + Math.ceil(8999 * Math.random())
       $test.style.backgroundColor = 'rgb(' +
           Math.floor(255 * Math.random()) + ',' +
           Math.floor(255 * Math.random()) + ',' +
           Math.floor(255 * Math.random()) + ')'
-    }, 20)
+    }, 10)
 
     var aWorker = new Worker("worker/a.js");
-    var files = ['/data/test.json', '/data/test.json', '/data/test.json', '/data/test.json', '/data/test.json', '/data/test.json', '/data/test.json', '/data/test.json', '/data/test.json', '/data/test.json', '/data/test.json', '/data/test.json', '/data/test.json', '/data/test.json', '/data/test.json', '/data/test.json', '/data/test.json', '/data/test.json', '/data/test.json']
+    var files = ['/data/test.json?1', '/data/test.json?2', '/data/UNKNOWN.json']
 
-    $output = document.getElementById('output')
-    $progress = document.getElementById('progress')
+    files.forEach(function (file, i) {
+      $progresses.innerHTML += file + '<progress value=0 max=1 id=i'+i+'></progress>'
+    })
+
     $progress.value = 0
     $progress.max = files.length;
 
     function messageHandler(e) {
-      $progress.value += 1
-      output($progress.value);
+      var data = e.data
 
-      if ($progress.value == $progress.max) {
-        $test.classList.add('stop')
-        clearInterval(anim)
+      if (data.progress) {
+        document.getElementById('i' + data.id).value = data.progress
+      }
+      else {
+        output(data);
+        $progress.value += 1
+        if ($progress.value == $progress.max) {
+          ///$test.classList.add('stop')
+          clearInterval(anim)
+        }
       }
     }
 

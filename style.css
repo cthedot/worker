@@ -20,9 +20,10 @@ pre {
 }
 
 div {
-  animation: a 100ms linear  infinite;
+  /*animation: a 100ms linear  infinite;*/
   text-align: center;
   font-size: 2em;
+  margin-bottom: 1em;
 }
 .stop {
   animation: none;
@@ -30,4 +31,5 @@ div {
 
 progress {
   width: 100%;
+  margin-bottom: 2em;
 }

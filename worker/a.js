@@ -5,8 +5,17 @@ if (typeof importScripts === 'function') {
   self.addEventListener('message', function (e) {
     // expected a list of URLs to download
 
-    e.data.forEach(function (data) {
-      Sharedutil.crud(data).then(postMessage).catch(postMessage)
+    function post(e) {
+      postMessage(e)
+    }
+
+    e.data.forEach(function (url, i) {
+      Sharedutil.crud(url, {
+        id: i,
+        progress: post,
+        error: post,
+        ok: post
+      })
     })
   });
 }
