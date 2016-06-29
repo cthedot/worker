@@ -10,6 +10,9 @@ var Sharedutil;
     return new Promise(function (resolve, reject) {
       var request = new XMLHttpRequest();
       var method = options.method || 'GET'
+      var timeout = options.timeout || 5000
+
+      var data = ''
       var _dataPairs = [];
 
       for (var name in options.data || {}) {
@@ -18,8 +21,9 @@ var Sharedutil;
           encodeURIComponent(options.data[name])
         );
       }
-      var data = _dataPairs.join('&').replace(/%20/g, '+');
+      data = _dataPairs.join('&').replace(/%20/g, '+');
 
+      /* sadly no possible to report from Promise :(
       request.addEventListener("progress", function (e) {
         if (e.lengthComputable) {
           var percentComplete = e.loaded / e.total;
@@ -27,6 +31,7 @@ var Sharedutil;
         } else {
         }
       });
+      */
       request.addEventListener('load', function (e) {
         if ([200, 201].indexOf(request.status) > -1) {
           resolve(request.response)
@@ -47,9 +52,10 @@ var Sharedutil;
       });
 
       request.open(method, url + (
-        (data && method == 'GET') ? '?' + data : ''
+        (data && method == 'GET') ? '?' + data : '?x=' + Math.random()
       ));
       request.responseType = 'json'
+      request.timeout = timeout
       if (method == 'POST') {
         request.setRequestHeader(
           'Content-Type',

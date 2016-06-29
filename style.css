@@ -1,0 +1,33 @@
+html {
+  font-family: monospace;
+}
+
+body {
+  max-width: 50em;
+  margin: 0 auto;
+}
+pre {
+  overflow: hidden;
+}
+
+@keyframes a {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+div {
+  animation: a 100ms linear  infinite;
+  text-align: center;
+  font-size: 2em;
+}
+.stop {
+  animation: none;
+}
+
+progress {
+  width: 100%;
+}
